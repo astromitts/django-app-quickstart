@@ -1,0 +1,114 @@
+{% load static %}
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="keywords" content="">		
+		<meta name="author" content="Bo Morin">
+		
+		{% comment %}
+		<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Rock+Salt">
+		<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Lato">
+        {% endcomment %}
+
+  		<link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  		{% block extra_style %}{% endblock %}
+  		{% comment %}
+  		<link href="{% static 'app.css' %}" rel="stylesheet">
+  		{% endcomment %}
+  		<title>
+  			BRAND{% block page_title %}{% endblock %}
+  		</title>
+  		{% comment %}
+  		<link rel="shortcut icon" type="/image/png" href="{% static 'site_images/favicon.ico' %}"/>
+  		{% endcomment %}
+  </head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<div class="container">
+			  <a class="navbar-brand" href="">
+			  	{% comment %}<img src="{% static 'site_images/crown.png' %}" />{% endcomment %}
+			  	BRAND
+			  </a>
+				<div>
+			    <ul class="navbar-nav">			
+					{% if user.is_authenticated %}		
+						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+						</li>			
+					{% else %}				
+						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'login' %}">Log In</a>
+						</li>			
+						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'register' %}">Register</a>
+						</li>
+					{% endif %}
+			    </ul>
+				</div>
+			</div>
+		</nav>
+
+	{% if pageModule and pageController %}
+		<div id="{{pageModule}}" ng-controller='{{pageController}}' class="body container container-fluid container-fluid-shrink">
+			<div class="loading" ng-show="state=='loading'">
+				{% comment %}
+				<div class="spinner"><img src="{% static 'site_images/ripple-loading.gif' %}"></div>
+				{% endcomment %}
+			</div>
+	{% else %}
+		<div class="body container container-fluid container-fluid-shrink">
+	{% endif %}
+			{% if messages %}
+			<div class="row">
+				<div class="col">
+					{% for message in messages %}
+					{% if message.tags == 'error' %}
+					<div class="alert alert-danger">
+					{% else %}
+					<div class="alert alert-{{message.tags}}">
+					{% endif %}
+						{{message}}
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+			{% block page_content %}{% endblock %}
+		</div>
+		
+		<!-- Footer -->
+<footer class="page-footer font-small pt-4">
+	<nav class="navbar navbar-light bg-light">
+		<div class="container">
+			<div class="col-lg-4 col-sm-12">
+					BRAND © 2021 Copyright 
+			</div>
+			<div class="col-lg-8 col-sm-12">
+				<a href="">About</a> |
+				<a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
+				<a href="{% url 'eula' %}">End User License Agreement</a> |
+				<a href="">Contact</a>
+			</div>
+			<div class="col-lg-12 col-sm-12">
+				Do you need a disclaimer? Put it here.
+			</div>
+		</div>
+	</nav>
+</footer>
+<!-- Footer -->
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  		<script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+		<script type="text/javascript">
+			$(function () {
+		  		$('[data-toggle="tooltip"]').tooltip()
+			})
+		</script>
+		<script type="text/javascript" src="{% static 'vendor/angular/angular.min.js' %}"></script>
+  		{% block extra_scripts %}{% endblock %}
+	</body>
+</html>

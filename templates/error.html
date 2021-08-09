@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block page_content %}
+	<div class="row">
+		<div class="col alert alert-danger">
+			<p class="text-bold">ERROR</p>
+			<p>{{error_status}}: {{error_message}}</p>
+		</div>
+	</div>
+{% endblock %}

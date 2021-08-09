@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %} | Register{% endblock %}
+{% block extra_scripts %}
+	<script type="text/javascript" src="{% static 'js/profileUtils.js' %}"></script>
+	<script type="text/javascript" src="{% static 'angular/registration.js' %}"></script>
+{% endblock %}
+
+
+{% block page_content %}
+<div class="row" ng-show="registerErrors">
+	<div class="col">
+		<div class="alert alert-danger">
+			<ul>
+				{% verbatim %}
+				<li ng-repeat="error in registerErrors">{{error}}</li>
+				{% endverbatim %}
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+	<form method="POST" action="" ng-submit="checkRegistration($event, email, newPassword, confirmPassword);">
+		{% csrf_token %}
+		{{form.as_p}}
+		<input type="submit" class="form-control btn btn-primary" value="Register"  />
+	</form>
+	</div>
+</div>
+{% endblock %}

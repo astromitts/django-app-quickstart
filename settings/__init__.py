@@ -41,14 +41,17 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_summernote',
     'rest_framework',
+    'appuser',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'appuser.appuser_middleware.session_request_validation',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -123,6 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -133,3 +138,37 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
 ]
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'iframe': False,
+        'toolbar': [
+            ['font', ['bold', 'underline', 'clear', 'italic']],
+            ['para', ['ul', 'ol']],
+            ['insert', ['link', ]],
+            ['view', ['codeview']],
+            ['style', ['style']],
+        ],
+        'styleTags': [
+            'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+        ],
+    }
+}
+
+
+MIDDLEWARE_DEBUG = True
+AUTHENTICATION_EXEMPT_VIEWS = [
+    'home',
+    'login',
+    'error',
+    'register',
+    'register_api',
+    'privacy_policy',
+    'eula',
+]
+SITE_ADMIN_VIEWS = []
+AUTHENTICATION_REQUIRED_REDIRECT = 'login'
+LOGIN_SUCCESS_REDIRECT = 'home'
+# PW_RESET_SUCCESS_REDIRECT = 'dashboard'
+DEFAULT_ERROR_VIEW = 'error'
+DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
