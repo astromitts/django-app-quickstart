@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+whitenoise = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
+djangorestframework = "*"
+django-summernote = "*"
+django-cors-headers = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
