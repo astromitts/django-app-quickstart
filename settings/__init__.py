@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_summernote',
     'rest_framework',
+    'helpers',
     'appuser',
 ]
 
@@ -51,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'appuser.appuser_middleware.session_request_validation',
+    'helpers.middleware.session_request_validation',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -69,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'helpers.context_processor.context_processor',
             ],
         },
     },

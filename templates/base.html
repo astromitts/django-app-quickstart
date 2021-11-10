@@ -1,4 +1,4 @@
-{% load static %}
+{% load static helpers %}
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -106,6 +106,7 @@
 	</nav>
 </footer>
 <!-- Footer -->
+
   		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   		<script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -113,6 +114,8 @@
 			$(function () {
 		  		$('[data-toggle="tooltip"]').tooltip()
 			})
+
+			var featureFlags = {{flags|jsondump|safe}};
 		</script>
 		<script type="text/javascript" src="{% static 'vendor/angular/angular.min.js' %}"></script>
   		{% block extra_scripts %}{% endblock %}
