@@ -5,6 +5,7 @@ from django.forms import (
     EmailInput,
     Form,
     PasswordInput,
+    TextInput,
 )
 from django.utils.safestring import mark_safe
 
@@ -31,7 +32,35 @@ class LoginPasswordForm(Form):
     password = CharField(widget=PasswordInput(attrs={'class': 'form-control'}))
 
 
-class RegisterForm(Form):
+class RegisterDisplayNameForm(Form):
+    email = CharField(widget=EmailInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'email'
+    }))
+    display_name = CharField(
+        help_text='How other users will identify you on the site',
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'displayName',
+            }
+        )
+    )
+    password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'newPassword'
+    }))
+    confirm_password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'confirmPassword'
+    }))
+
+
+class RegisterEmailForm(Form):
     email = CharField(widget=EmailInput(attrs={
         'class': 'form-control',
         'autocomplete': 'off',

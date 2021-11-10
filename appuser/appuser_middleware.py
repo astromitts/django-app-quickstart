@@ -16,7 +16,7 @@ def session_request_validation(get_response):
         error_message = None
         status_code = 200
 
-        if 'herokuapp.com' in request.get_host():
+        if 'herokuapp.com' in request.get_host() and settings.REDIRECT_TO:
             return redirect('{}{}'.format(settings.REDIRECT_TO, request.path))
 
         user_is_authenticated = request.user.is_authenticated

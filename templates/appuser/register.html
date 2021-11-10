@@ -2,6 +2,9 @@
 {% load static %}
 {% block page_title %} | Register{% endblock %}
 {% block extra_scripts %}
+	<script type="text/javascript">
+		var useDisplayName = {{useDisplayName|safe}};
+	</script>
 	<script type="text/javascript" src="{% static 'js/profileUtils.js' %}"></script>
 	<script type="text/javascript" src="{% static 'angular/registration.js' %}"></script>
 {% endblock %}
@@ -21,7 +24,7 @@
 </div>
 <div class="row">
 	<div class="col">
-	<form method="POST" action="" ng-submit="checkRegistration($event, email, newPassword, confirmPassword);">
+	<form method="POST" action="" ng-submit="checkRegistration($event, email, newPassword, confirmPassword, displayName);">
 		{% csrf_token %}
 		{{form.as_p}}
 		<input type="submit" class="form-control btn btn-primary" value="Register"  />

@@ -1,3 +1,5 @@
+import json
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
@@ -12,7 +14,8 @@ from rest_framework.views import APIView
 from appuser.forms import (
     LoginPasswordForm,
     PolicyForm,
-    RegisterForm,
+    RegisterDisplayNameForm,
+    RegisterEmailForm,
 )
 
 from appuser.models import (
@@ -30,9 +33,9 @@ def _login(form, request):
         'user': None,
     }
     if form.is_valid():
-        username = request.POST.get('email').lower()
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
-        user = User.objects.filter(username__iexact=username).first()
+        user = User.objects.filter(email__iexact=email).first()
         if user:
             password_check = user.check_password(password)
             if password_check:
@@ -114,11 +117,16 @@ class PolicyAgreement(View):
 class Register(View):
     def setup(self, request, *args, **kwargs):
         super(Register, self).setup(request, *args, **kwargs)
-        self.form = RegisterForm
+        if settings.APPUSER_SETTINGS['use_display_name']:
+            self.form = RegisterDisplayNameForm
+        else:
+            self.form = RegisterEmailForm
+
         self.template = loader.get_template('appuser/register.html')
         self.context = {
             'form': None,
             'error': None,
+            'useDisplayName': json.dumps(settings.APPUSER_SETTINGS['use_display_name']),
             'pageModule': 'registrationModule',
             'pageController': 'registrationController'
         }
@@ -131,13 +139,25 @@ class Register(View):
 class RegisterAPI(APIView):
     def post(self, request, *args, **kwargs):
         request_type = request.data['request']
+        if settings.APPUSER_SETTINGS['use_display_name']:
+            posted_username = request.data['display_name']
+        else:
+            posted_username = request.data['email'].lower()
+
         if request_type == 'check-id':
+
             email_existing = User.objects.filter(email__iexact=request.data['email'].lower()).exists()
+            username_existing = User.objects.filter(username__iexact=posted_username.lower()).exists()
             status = 'ok'
             errors = []
             if email_existing:
                 errors.append('Email already in use')
                 status = 'error'
+
+            if username_existing and settings.APPUSER_SETTINGS['use_display_name']:
+                errors.append('Username already in use')
+                status = 'error'
+
             response = {
                 'status': status,
                 'errors': errors
@@ -145,7 +165,7 @@ class RegisterAPI(APIView):
         elif request_type == 'register':
             user = User(
                 email=request.data['email'],
-                username=request.data['email']
+                username=posted_username
             )
             try:
                 user.save()

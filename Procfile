@@ -1,0 +1,1 @@
+web: python manage.py migrate --settings=settings.prod; python manage.py collectstatic --noinput --settings=settings.prod; gunicorn project.wsgi --log-file -

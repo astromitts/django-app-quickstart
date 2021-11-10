@@ -126,8 +126,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -172,3 +170,7 @@ LOGIN_SUCCESS_REDIRECT = 'home'
 # PW_RESET_SUCCESS_REDIRECT = 'dashboard'
 DEFAULT_ERROR_VIEW = 'error'
 DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
+
+APPUSER_SETTINGS = {
+    'use_display_name': False
+}

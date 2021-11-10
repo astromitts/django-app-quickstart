@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.timezone import now
@@ -25,6 +26,17 @@ class AppUser(models.Model):
             self.user.pk,
             self.user.email
         )
+
+    @property
+    def display_name(self):
+        if settings.APPUSER_SETTINGS['use_display_name']:
+            return self.user.username
+        else:
+            return self.user.email
+
+    @property
+    def superuser(self):
+        return self.user.is_superuser
 
     @property
     def has_valid_policy(self):
