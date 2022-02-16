@@ -11,12 +11,7 @@ from django.views import View
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from appuser.forms import (
-    LoginPasswordForm,
-    PolicyForm,
-    RegisterDisplayNameForm,
-    RegisterEmailForm,
-)
+from appuser import forms
 
 from appuser.models import (
     Policy,
@@ -57,7 +52,7 @@ def _login(form, request):
 class Login(View):
     def setup(self, request, *args, **kwargs):
         super(Login, self).setup(request, *args, **kwargs)
-        self.form = LoginPasswordForm
+        self.form = forms.LoginPasswordForm
         self.template = loader.get_template('appuser/login.html')
         self.context = {'form': None, 'error': None}
 
@@ -94,7 +89,7 @@ class Logout(View):
 class PolicyAgreement(View):
     def setup(self, request, *args, **kwargs):
         super(PolicyAgreement, self).setup(request, *args, **kwargs)
-        self.form = PolicyForm
+        self.form = forms.PolicyForm
         self.user = request.user
         self.template = loader.get_template('appuser/policy-agreement.html')
 
@@ -117,16 +112,23 @@ class PolicyAgreement(View):
 class Register(View):
     def setup(self, request, *args, **kwargs):
         super(Register, self).setup(request, *args, **kwargs)
-        if settings.APPUSER_SETTINGS['use_display_name']:
-            self.form = RegisterDisplayNameForm
+        use_display_name = settings.APPUSER_SETTINGS['use_display_name']
+        use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+        if use_display_name and use_human_name:
+            self.form = forms.RegisterDisplayNameGivenNameForm
+        elif use_display_name and not use_human_name:
+            self.form = forms.RegisterDisplayNameForm
+        elif not use_display_name and use_human_name:
+            self.form = forms.RegisterEmailGivenNameForm
         else:
-            self.form = RegisterEmailForm
+            self.form = forms.RegisterEmailForm
 
         self.template = loader.get_template('appuser/register.html')
         self.context = {
             'form': None,
             'error': None,
-            'useDisplayName': json.dumps(settings.APPUSER_SETTINGS['use_display_name']),
+            'useDisplayName': json.dumps(use_display_name),
+            'useHumanName': json.dumps(use_human_name),
             'pageModule': 'registrationModule',
             'pageController': 'registrationController'
         }
@@ -163,9 +165,18 @@ class RegisterAPI(APIView):
                 'errors': errors
             }
         elif request_type == 'register':
+
+            if settings.APPUSER_SETTINGS['use_human_name']:
+                first_name = request.data['first_name']
+                last_name = request.data['last_name']
+            else:
+                first_name = None
+                last_name = None
             user = User(
                 email=request.data['email'],
-                username=posted_username
+                username=posted_username,
+                first_name=first_name,
+                last_name=last_name,
             )
             try:
                 user.save()
@@ -183,6 +194,95 @@ class RegisterAPI(APIView):
             response = {
                 'status': 'error',
                 'message': 'Unrecognized request.'
+            }
+
+        return Response(response)
+
+
+class ProfileAPI(APIView):
+    def setup(self, request, *args, **kwargs):
+        super(ProfileAPI, self).setup(request, *args, **kwargs)
+        self.use_display_name = settings.APPUSER_SETTINGS['use_display_name']
+        self.use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {
+                'user': {
+                    'email': request.user.email,
+                    'username': request.user.username,
+                    'first_name': request.user.first_name,
+                    'last_name': request.user.last_name
+                },
+                'settings': {
+                    'use_display_name': settings.APPUSER_SETTINGS['use_display_name'],
+                    'use_human_name': settings.APPUSER_SETTINGS['use_human_name'],
+                }
+            }
+        )
+
+    def put(self, request, *args, **kwargs):
+        request_type = request.data.get('request')
+        if request_type == 'check-id':
+            if self.use_display_name:
+                posted_username = request.data['user']['display_name']
+            else:
+                posted_username = request.data['user']['email'].lower()
+
+            if request.user.is_authenticated:
+                email_existing = User.objects.filter(
+                    email__iexact=request.data['user']['email'].lower()
+                ).exclude(pk=request.user.pk).exists()
+                username_existing = User.objects.filter(
+                    username__iexact=posted_username.lower()
+                ).exclude(pk=request.user.pk).exists()
+            else:
+                email_existing = User.objects.filter(email__iexact=request.data['email'].lower()).exists()
+                username_existing = User.objects.filter(username__iexact=posted_username.lower()).exists()
+
+            status = 'ok'
+            errors = []
+
+            if email_existing or username_existing:
+                if email_existing:
+                    errors.append('Email already in use')
+                    status = 'error'
+
+                if username_existing and settings.APPUSER_SETTINGS['use_display_name']:
+                    errors.append('Username already in use')
+                    status = 'error'
+            else:
+                request.user.email = request.data['user']['email'].lower()
+                request.user.usernamr = posted_username
+                if self.use_human_name:
+                    request.user.first_name = request.data['user']['first_name']
+                    request.user.last_name = request.data['user']['last_name']
+                request.user.save()
+
+            response = {
+                'status': status,
+                'errors': errors
+            }
+        elif request_type == 'update-password':
+            current_password = request.data['current_password']
+            new_password = request.data['new_password']
+            password_check = request.user.check_password(current_password)
+            if password_check:
+                request.user.set_password(new_password)
+                request.user.save()
+                logout(request)
+                response = {
+                    'status': 'ok',
+                }
+            else:
+                response = {
+                    'status': 'error',
+                    'errors': ['Provided password incorrect.']
+                }
+        else:
+            response = {
+                'status': 'error',
+                'errors': ['Request not recognized']
             }
 
         return Response(response)
@@ -215,3 +315,30 @@ class EULA(PolicyBase):
             'last_updated': self.current_policy.created_display,
         }
         return HttpResponse(self.template.render(context, request))
+
+
+class UserProfile(View):
+    def setup(self, request, *args, **kwargs):
+        use_display_name = settings.APPUSER_SETTINGS['use_display_name']
+        use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+        self.initial_values = {
+            'email': request.user.email,
+            'display_name': request.user.username,
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+        }
+
+        self.template = loader.get_template('appuser/profile.html')
+        self.context = {
+            'error': None,
+            'useDisplayName': json.dumps(use_display_name),
+            'useHumanName': json.dumps(use_human_name),
+            'user': json.dumps(self.initial_values),
+            'pageModule': 'profileModule',
+            'pageController': 'profileController'
+        }
+        super(UserProfile, self).setup(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+
+        return HttpResponse(self.template.render(self.context, request))

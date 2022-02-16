@@ -11,8 +11,16 @@ registrationApp.controller(
 		$scope.editProfile = false;
 		$scope.error = null;
 		$scope.useDisplayName = useDisplayName;
+		$scope.useHumanName = useHumanName;
 
-		$scope.checkRegistration = function(event, email, newPassword, confirmPassword, displayName) {
+		$scope.checkRegistration = function(
+			event, 
+			email, 
+			newPassword, 
+			confirmPassword, 
+			displayName,
+			firstName,
+			lastName) {
 			event.preventDefault();
 			$scope.registerErrors = [];
 			if(newPassword && confirmPassword) {
@@ -23,29 +31,28 @@ registrationApp.controller(
 				}
 			}
 			if (!$scope.registerErrors.length){
-				if ($scope.useDisplayName){
-					var checkRegistrationData = {
-						request: 'check-id',
-						email: email,
-						display_name: displayName,
-					}
-					var registrationData = {
-						request: 'register',
-						email: email,
-						display_name: displayName,
-						password: newPassword,
-					}
-				} else {
-					var checkRegistrationData = {
-						request: 'check-id',
-						email: email
-					}
-					var registrationData = {
-						request: 'register',
-						email: email,
-						password: newPassword,
-					}
+				var checkRegistrationData = {
+					request: 'check-id',
+					email: email,
+					display_name: null,
 				}
+				var registrationData = {
+					request: 'register',
+					email: email,
+					display_name: null,
+					first_name: null,
+					last_name: null,
+					password: newPassword,
+				}
+				if ($scope.useDisplayName){
+					checkRegistrationData.display_name = displayName;
+					registrationData.display_name = displayName;
+				}
+				if ($scope.useHumanName) {
+					registrationData.first_name = firstName;
+					registrationData.last_name = lastName;
+				}
+
 				$http.post('/user/api/register/', checkRegistrationData).then(function(response){
 					if(response.data.status == 'ok') {
 						$http.post('/user/api/register/', registrationData).then(function(response){

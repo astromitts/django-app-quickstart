@@ -9,4 +9,6 @@ urlpatterns = [
     path('eula/', views.EULA.as_view(), name='eula'),
     path('privacy-policy/', views.PrivacyPolicy.as_view(), name='privacy_policy'),
     path('policy-agreement/', views.PolicyAgreement.as_view(), name='policy_agreement'),
+    path('profile/', views.UserProfile.as_view(), name='user_profile'),
+    path('profile/api/', views.ProfileAPI.as_view(), name='user_profile_api'),
 ]

@@ -4,6 +4,7 @@
 {% block extra_scripts %}
 	<script type="text/javascript">
 		var useDisplayName = {{useDisplayName|safe}};
+		var useHumanName = {{useHumanName|safe}};
 	</script>
 	<script type="text/javascript" src="{% static 'js/profileUtils.js' %}"></script>
 	<script type="text/javascript" src="{% static 'angular/registration.js' %}"></script>
@@ -24,9 +25,9 @@
 </div>
 <div class="row">
 	<div class="col">
-	<form method="POST" action="" ng-submit="checkRegistration($event, email, newPassword, confirmPassword, displayName);">
+	<form method="POST" action="" ng-submit="">
 		{% csrf_token %}
-		{{form.as_p}}
+		
 		<input type="submit" class="form-control btn btn-primary" value="Register"  />
 	</form>
 	</div>

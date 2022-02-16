@@ -29,22 +29,24 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
-			  <a class="navbar-brand" href="">
+			  <a class="navbar-brand" href="/">
 			  	{% comment %}<img src="{% static 'site_images/crown.png' %}" />{% endcomment %}
 			  	BRAND
 			  </a>
 				<div>
 			    <ul class="navbar-nav">			
-					{% if user.is_authenticated %}		
+					{% if request.user.is_authenticated %}		
 						{% if user.is_superuser %}
 							<li class="nav-item">
 							  <a class="nav-link" href="/admin/">Admin</a>
 							</li>	
 						{% endif %}	
 						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'user_profile' %}">{{request.user.username}}</a>
+						</li>			
+						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
 						</li>
-						</li>			
 					{% else %}				
 						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'login' %}">Log In</a>
@@ -106,7 +108,7 @@
 	</nav>
 </footer>
 <!-- Footer -->
-
+		{% comment %}
   		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   		<script type="text/javascript" src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -114,7 +116,10 @@
 			$(function () {
 		  		$('[data-toggle="tooltip"]').tooltip()
 			})
+		</script>
+  		{% endcomment %}
 
+		<script type="text/javascript">
 			var featureFlags = {{flags|jsondump|safe}};
 		</script>
 		<script type="text/javascript" src="{% static 'vendor/angular/angular.min.js' %}"></script>

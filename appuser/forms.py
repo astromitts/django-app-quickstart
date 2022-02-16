@@ -60,12 +60,99 @@ class RegisterDisplayNameForm(Form):
     }))
 
 
+class RegisterDisplayNameGivenNameForm(Form):
+    email = CharField(widget=EmailInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'email'
+    }))
+
+    first_name = CharField(
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'firstName',
+            }
+        )
+    )
+
+    last_name = CharField(
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'lastName',
+            }
+        )
+    )
+
+    display_name = CharField(
+        help_text='How other users will identify you on the site',
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'displayName',
+            }
+        )
+    )
+    password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'newPassword'
+    }))
+    confirm_password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'confirmPassword'
+    }))
+
+
 class RegisterEmailForm(Form):
     email = CharField(widget=EmailInput(attrs={
         'class': 'form-control',
         'autocomplete': 'off',
         'ng-model': 'email'
     }))
+    password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'newPassword'
+    }))
+    confirm_password = CharField(widget=PasswordInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'confirmPassword'
+    }))
+
+
+class RegisterEmailGivenNameForm(Form):
+    email = CharField(widget=EmailInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off',
+        'ng-model': 'email'
+    }))
+
+    first_name = CharField(
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'firstName',
+            }
+        )
+    )
+
+    last_name = CharField(
+        widget=TextInput(
+            attrs={
+                'class': 'form-control',
+                'autocomplete': 'off',
+                'ng-model': 'lastName',
+            }
+        )
+    )
     password = CharField(widget=PasswordInput(attrs={
         'class': 'form-control',
         'autocomplete': 'off',

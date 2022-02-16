@@ -52,9 +52,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'helpers.middleware.session_request_validation',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'helpers.middleware.session_request_validation',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -174,5 +174,6 @@ DEFAULT_ERROR_VIEW = 'error'
 DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
 
 APPUSER_SETTINGS = {
-    'use_display_name': False
+    'use_display_name': True,
+    'use_human_name': True
 }
