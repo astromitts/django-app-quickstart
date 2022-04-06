@@ -14,14 +14,14 @@ registrationApp.controller(
 		$scope.useHumanName = useHumanName;
 
 		$scope.checkRegistration = function(
-			event, 
+			$event, 
 			email, 
 			newPassword, 
 			confirmPassword, 
 			displayName,
 			firstName,
 			lastName) {
-			event.preventDefault();
+			$event.preventDefault();
 			$scope.registerErrors = [];
 			if(newPassword && confirmPassword) {
 				if (newPassword != confirmPassword) {
