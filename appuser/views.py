@@ -159,7 +159,6 @@ class RegisterAPI(APIView):
             if username_existing and settings.APPUSER_SETTINGS['use_display_name']:
                 errors.append('Username already in use')
                 status = 'error'
-
             response = {
                 'status': status,
                 'errors': errors
@@ -169,15 +168,17 @@ class RegisterAPI(APIView):
             if settings.APPUSER_SETTINGS['use_human_name']:
                 first_name = request.data['first_name']
                 last_name = request.data['last_name']
+                user = User(
+                    email=request.data['email'],
+                    username=posted_username,
+                    first_name=first_name,
+                    last_name=last_name,
+                )
             else:
-                first_name = None
-                last_name = None
-            user = User(
-                email=request.data['email'],
-                username=posted_username,
-                first_name=first_name,
-                last_name=last_name,
-            )
+                user = User(
+                    email=request.data['email'],
+                    username=posted_username,
+                )
             try:
                 user.save()
                 user.set_password(request.data['password'])
@@ -185,7 +186,7 @@ class RegisterAPI(APIView):
                 response = {
                     'status': 'ok'
                 }
-            except:
+            except Exception:
                 response = {
                     'status': 'error',
                     'message': 'Unknown internal error occurred. Please try again.'
