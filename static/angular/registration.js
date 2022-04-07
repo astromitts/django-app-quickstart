@@ -56,7 +56,11 @@ registrationApp.controller(
 				$http.post('/user/api/register/', checkRegistrationData).then(function(response){
 					if(response.data.status == 'ok') {
 						$http.post('/user/api/register/', registrationData).then(function(response){
-							window.location.href = '/user/login/?registered=true&id=' + email;
+							if(response.data.status == 'ok') {
+								window.location.href = '/user/login/?registered=true&id=' + email;
+							} else {
+								$scope.registerErrors = [response.data.message, ];
+							}
 						});
 					} else {
 						$scope.registerErrors = response.data.errors;
