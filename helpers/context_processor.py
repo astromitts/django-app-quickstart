@@ -1,3 +1,4 @@
+from django.conf import settings
 from helpers.models import FeatureFlag
 
 
@@ -14,4 +15,7 @@ def context_processor(request):
             flags[flag.title] = flag.value == 1
     return {
         'flags': flags,
+        'templates': {
+            'display_username': settings.DISPLAY_USER_NAME
+        }
     }
