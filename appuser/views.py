@@ -12,11 +12,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from appuser import forms
-
 from appuser.models import (
     Policy,
     PolicyLog
 )
+
+from namer.utils import save_anonymous_user
 
 
 def _login(form, request):
@@ -54,7 +55,11 @@ class Login(View):
         super(Login, self).setup(request, *args, **kwargs)
         self.form = forms.LoginPasswordForm
         self.template = loader.get_template('appuser/login.html')
-        self.context = {'form': None, 'error': None}
+        self.context = {
+            'form': None,
+            'error': None,
+            'allow_guest': settings.APPUSER_SETTINGS['allow_anonymous_users']
+        }
 
     def get(self, request, *args, **kwargs):
         if request.GET.get('id'):
@@ -77,6 +82,13 @@ class Login(View):
             messages.error(request, login_attempt['error'])
         self.context['form'] = login_attempt['form']
         return HttpResponse(self.template.render(self.context, request))
+
+
+class CreateGuestAccount(View):
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            save_anonymous_user(request)
+        return redirect(reverse(settings.LOGIN_SUCCESS_REDIRECT))
 
 
 class Logout(View):
