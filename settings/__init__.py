@@ -176,7 +176,7 @@ PW_RESET_SUCCESS_REDIRECT = 'dashboard'
 DEFAULT_ERROR_VIEW = 'error'
 DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
 
-DISPLAY_USER_NAME = False
+DISPLAY_USER_NAME = True
 
 APPUSER_SETTINGS = {
     'use_display_name': False,

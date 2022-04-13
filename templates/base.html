@@ -45,10 +45,17 @@
 							<li class="nav-item">
 							  <a class="nav-link" href="{% url 'user_profile' %}">{{request.user.username}}</a>
 							</li>	
-						{% endif %}		
+						{% endif %}
+						{% if templates.display_logout %}		
 						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
 						</li>
+						{% endif %}
+						{% if templates.display_create_account %}		
+						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'register' %}">Create Account</a>
+						</li>
+						{% endif %}
 					{% else %}				
 						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'login' %}">Log In</a>

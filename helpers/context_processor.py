@@ -16,6 +16,8 @@ def context_processor(request):
     return {
         'flags': flags,
         'templates': {
-            'display_username': settings.DISPLAY_USER_NAME
+            'display_username': settings.DISPLAY_USER_NAME and not request.user.appuser.is_anonymous,
+            'display_logout': request.user.is_authenticated and not request.user.appuser.is_anonymous,
+            'display_create_account': request.user.is_authenticated and request.user.appuser.is_anonymous,
         }
     }
