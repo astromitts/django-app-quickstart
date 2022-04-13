@@ -29,6 +29,17 @@
 		</form>
 		</div>
 	</div>
+
+	{% if allow_guest %}
+	<div class="row">
+		<div class="col">
+			<form method="POST" action="{% url 'create_guest' %}">
+				{% csrf_token %}
+				<input type="submit" class="form-control btn btn-warning" value="Continue as Guest" />
+			</form>
+		</div>
+	</div>
+	{% endif %}
 	<div class="row">
 		<div class="col">
 			Not registered? <a href="{% url 'register' %}">Go here</a>.
