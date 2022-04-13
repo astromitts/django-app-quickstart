@@ -35,12 +35,18 @@ class AppUser(models.Model):
             return self.user.email
 
     @property
+    def is_anonymous(self):
+        return self.user.email.endswith('@app.tmp')
+
+    @property
     def superuser(self):
         return self.user.is_superuser
 
     @property
     def has_valid_policy(self):
-        return self.policylog_set.filter(policy=Policy.get_current()).exists()
+        if not self.is_anonymous:
+            return self.policylog_set.filter(policy=Policy.get_current()).exists()
+        return True
 
 
 class Policy(models.Model):
