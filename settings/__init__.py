@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_summernote',
     'rest_framework',
     'helpers',
+    'namer',
     'appuser',
 ]
 
@@ -54,7 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'helpers.middleware.session_request_validation',
+    'helpers.auth_middleware.anonymous_user',
+    'helpers.request_middleware.request_validation',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -165,15 +167,20 @@ AUTHENTICATION_EXEMPT_VIEWS = [
     'register_api',
     'privacy_policy',
     'eula',
+    'create_guest',
 ]
 SITE_ADMIN_VIEWS = []
 AUTHENTICATION_REQUIRED_REDIRECT = 'login'
-LOGIN_SUCCESS_REDIRECT = 'home'
+LOGIN_SUCCESS_REDIRECT = 'dashboard'
 # PW_RESET_SUCCESS_REDIRECT = 'dashboard'
 DEFAULT_ERROR_VIEW = 'error'
 DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
 
 APPUSER_SETTINGS = {
-    'use_display_name': True,
-    'use_human_name': True
+    'use_display_name': False,
+    'use_human_name': False,
+    'allow_anonymous_users': True,
+    'anonymous_users': {
+        'bypass_login': False
+    }
 }
