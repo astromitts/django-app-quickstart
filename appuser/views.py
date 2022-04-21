@@ -332,7 +332,7 @@ class PrivacyPolicy(PolicyBase):
         context = {
             'page_title': 'Privacy Policy',
             'header': 'GDPR PRIVACY NOTICE',
-            'content': self.current_policy.privacy_policy,
+            'content': self.current_policy.privacy_policy_display,
             'last_updated': self.current_policy.created_display,
         }
         return HttpResponse(self.template.render(context, request))
@@ -343,7 +343,7 @@ class EULA(PolicyBase):
         context = {
             'page_title': 'EULA',
             'header': 'END USER LICENSE AGREEMENT',
-            'content': self.current_policy.eula,
+            'content': self.current_policy.eula_display,
             'last_updated': self.current_policy.created_display,
         }
         return HttpResponse(self.template.render(context, request))

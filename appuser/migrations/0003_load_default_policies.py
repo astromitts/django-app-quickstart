@@ -8,9 +8,9 @@ def forward(apps, schema_editor):
     policy_eula = """
     <h1>Terms and Conditions ("Terms")</h1>
 
-    <p>Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the {{APP NAME DISPLAY}} website (the "Service") operated by {{APP NAME LEGAL}} ("us", "we", or "our").</p>
+    <p>Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the {{APP_NAME_DISPLAY}} website (the "Service") operated by {{APP_NAME_LEGAL}} ("us", "we", or "our").</p>
     <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
-    <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service. The Terms and Conditions agreement  for {{APP NAME LEGAL}} has been created with the help of <a href="https://www.termsfeed.com/">TermsFeed</a>.</p>
+    <p>By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service. The Terms and Conditions agreement  for {{APP_NAME_LEGAL}} has been created with the help of <a href="https://www.termsfeed.com/">TermsFeed</a>.</p>
 
     <h2>Accounts</h2>
     <p>When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.</p>
@@ -18,8 +18,8 @@ def forward(apps, schema_editor):
     <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
 
     <h2>Links To Other Web Sites</h2>
-    <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by {{APP NAME LEGAL}}.</p>
-    <p>{{APP NAME LEGAL}} has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that {{APP NAME LEGAL}} shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
+    <p>Our Service may contain links to third-party web sites or services that are not owned or controlled by {{APP_NAME_LEGAL}}.</p>
+    <p>{{APP_NAME_LEGAL}} has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that {{APP_NAME_LEGAL}} shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with use of or reliance on any such content, goods or services available on or through any such web sites or services.</p>
     <p>We strongly advise you to read the terms and conditions and privacy policies of any third-party web sites or services that you visit.</p>
     <h2>Termination</h2>
     <p>We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
@@ -34,16 +34,13 @@ def forward(apps, schema_editor):
     <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material we will try to provide at least 30 days notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
     <p>By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, please stop using the Service.</p>
     <h2>Contact Us</h2>
-    <p>If you have any questions about these Terms, please <a href="mailto:{{APP NAME CONTACT}}">contact us.</a></p>
+    <p>If you have any questions about these Terms, please <a href="mailto:{{APP_LEGAL_CONTACT_EMAIL}}">contact us.</a></p>
     """
     policy_pp = """
-        <h1>GDPR PRIVACY NOTICE</h1>
-        <p>Last updated 07/18/2021</p>
-
         <h1>INTRODUCTION</h1>
-        <p>Thank you for choosing to be part of our community at {{APP NAME LEGAL}}. (“company”, “we”, “us”, or “our”). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:{{APP NAME CONTACT}}" target="_blank">{{APP NAME CONTACT}}</a>.</p>
-        <p>When you visit our website {{APP NAME LEGAL}} (“Site”) and use our services, you trust us with your personal information. We take your privacy very seriously. In this privacy notice, we describe our privacy policy. We seek to explain to you in the clearest way possible what information we collect, how we use it and what rights you have in relation to it. We hope you take some time to read through it carefully, as it is important. If there are any terms in this privacy policy that you do not agree with, please discontinue use of our site and our services.</p>
-        <p>This privacy policy applies to all information collected through our websites (such as {{APP NAME LEGAL}}), our mobile (“Apps”), and/or any related services, sales, marketing or events (we refer to them collectively in this privacy policy as the “Sites”).</p>
+        <p>Thank you for choosing to be part of our community at {{APP_NAME_LEGAL}}. (“company”, “we”, “us”, or “our”). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy, or our practices with regards to your personal information, please contact us at <a href="mailto:{{APP_LEGAL_CONTACT_EMAIL}}" target="_blank">{{APP_LEGAL_CONTACT_EMAIL}}</a>.</p>
+        <p>When you visit our website {{APP_NAME_LEGAL}} (“Site”) and use our services, you trust us with your personal information. We take your privacy very seriously. In this privacy notice, we describe our privacy policy. We seek to explain to you in the clearest way possible what information we collect, how we use it and what rights you have in relation to it. We hope you take some time to read through it carefully, as it is important. If there are any terms in this privacy policy that you do not agree with, please discontinue use of our site and our services.</p>
+        <p>This privacy policy applies to all information collected through our websites (such as {{APP_NAME_LEGAL}}), our mobile (“Apps”), and/or any related services, sales, marketing or events (we refer to them collectively in this privacy policy as the “Sites”).</p>
         <p>Please read this privacy policy carefully as it will help you make informed decisions about sharing your personal information with us.</p>
         <h1>TABLE OF CONTENTS</h1>
 
@@ -129,7 +126,7 @@ def forward(apps, schema_editor):
 
         <h1>DO WE COLLECT INFORMATION FROM MINORS?</h1>
         <p>In Summary: We do not knowingly collect data from or market to children under 18 years of age.</p>
-        <p>We do not knowingly solicit data from or market to children under 18 years of age. By using the Sites, you represent that you are at least 18 or that you are the parent or guardian of such a minor and consent to such minor dependent’s use of the Site and App. If we learn that personal information from users less than 18 years of age has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we have collected from children under age 18, please contact us at info@{{APP NAME LEGAL}}.com.</p>
+        <p>We do not knowingly solicit data from or market to children under 18 years of age. By using the Sites, you represent that you are at least 18 or that you are the parent or guardian of such a minor and consent to such minor dependent’s use of the Site and App. If we learn that personal information from users less than 18 years of age has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we have collected from children under age 18, please contact us at {{APP_LEGAL_CONTACT_EMAIL}}.</p>
         <h1>WHAT ARE YOUR PRIVACY RIGHTS?</h1>
         <p>In Summary: You may review, change, or terminate your account at any time.</p>
         <p>In some regions, like the European Economic Area, you have certain rights under applicable data protection laws. These may include the right (i) to request access and obtain a copy of your personal information, (ii) to request rectification or erasure; (iii) to restrict the processing of your personal information; and (iv) if applicable, to data portability. In certain circumstances, you may also have the right to object to the processing of your personal information. To make such a request, please use the contact details provided below. We will consider and act upon any request in accordance with applicable data protection laws.</p>
@@ -143,12 +140,12 @@ def forward(apps, schema_editor):
         <p><span class="text-bold">Cookies and similar technologies:</span> Most Web browsers are set to accept cookies by default. If you prefer, you can usually choose to set your browser to remove cookies and to reject cookies. If you choose to remove cookies or reject cookies, this could affect certain features or services of our Sites.</p><h1>DO CALIFORNIA RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?</h1>
         <p>In Summary: Yes, if you are a resident of California, you are granted specific rights regarding access to your personal information.</p>
         <p>California Civil Code Section 1798.83, also known as the “Shine The Light” law, permits our users who are California residents to request and obtain from us, once a year and free of charge, information about categories of personal information (if any) we disclosed to third parties for direct marketing purposes and the names and addresses of all third parties with which we shared personal information in the immediately preceding calendar year. If you are a California resident and would like to make such a request, please submit your request in writing to us using the contact information provided below.</p>
-        <p>If you are under 18 years of age, reside in California, and have a registered account with {{APP NAME LEGAL}}, you have the right to request removal of unwanted data that you publicly post on the Sites and Mobile Application. To request removal of such data, please contact us using the contact information provided below, and include the email address associated with your account and a statement that you reside in California. We will make sure the data is not publicly displayed on the Sites and Mobile Application, but please be aware that the data may not be completely or comprehensively removed from our systems.</p>
+        <p>If you are under 18 years of age, reside in California, and have a registered account with {{APP_NAME_LEGAL}}, you have the right to request removal of unwanted data that you publicly post on the Sites and Mobile Application. To request removal of such data, please contact us using the contact information provided below, and include the email address associated with your account and a statement that you reside in California. We will make sure the data is not publicly displayed on the Sites and Mobile Application, but please be aware that the data may not be completely or comprehensively removed from our systems.</p>
         <h1>DO WE MAKE UPDATES TO THIS POLICY?</h1>
         <p>In Summary: Yes, we will update this policy as necessary to stay compliant with relevant laws.</p>
         <p>We may update this privacy policy from time to time. The updated version will be indicated by an updated “Revised” date and the updated version will be effective as soon as it is accessible. If we make material changes to this privacy policy, we may notify you either by prominently posting a notice of such changes or by directly sending you a notification. We encourage you to review this privacy policy frequently to be informed of how we are protecting your information.</p>
         <h1>HOW CAN YOU CONTACT US ABOUT THIS POLICY?</h1>
-        <p>If you have questions or comments about this policy, email us Our Privacy Officer at <a href="mailto:{{APP NAME CONTACT}}">{{APP NAME CONTACT}}</a>.</p>
+        <p>If you have questions or comments about this policy, email us Our Privacy Officer at <a href="mailto:{{APP_LEGAL_CONTACT_EMAIL}}">{{APP_LEGAL_CONTACT_EMAIL}}</a>.</p>
     """
 
     policy = Policy(

@@ -187,3 +187,7 @@ APPUSER_SETTINGS = {
         'bypass_login': False
     }
 }
+
+APP_NAME_DISPLAY = 'Official App Display'
+APP_NAME_LEGAL = 'app.com'
+APP_LEGAL_CONTACT_EMAIL = 'info@app.com'

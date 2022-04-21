@@ -61,6 +61,16 @@ class Policy(models.Model):
             Policy.objects.filter(current=True).exclude(version=self.version).update(current=False)
         super(Policy, self).save(*args, **kwargs)
 
+    def replace_with_settings_values(self, blob):
+        replacement_dict = {
+            '{{APP_NAME_DISPLAY}}': settings.APP_NAME_DISPLAY,
+            '{{APP_NAME_LEGAL}}': settings.APP_NAME_LEGAL,
+            '{{APP_LEGAL_CONTACT_EMAIL}}': settings.APP_LEGAL_CONTACT_EMAIL,
+        }
+        for key, val in replacement_dict.items():
+            blob = blob.replace(key, val)
+        return blob
+
     @classmethod
     def get_current(cls):
         return cls.objects.get(current=True)
@@ -68,6 +78,14 @@ class Policy(models.Model):
     @property
     def created_display(self):
         return self.created.strftime('%B %d, %Y')
+
+    @property
+    def eula_display(self):
+        return self.replace_with_settings_values(self.eula)
+
+    @property
+    def privacy_policy_display(self):
+        return self.replace_with_settings_values(self.privacy_policy)
 
 
 class PolicyLog(models.Model):
