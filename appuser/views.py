@@ -75,7 +75,7 @@ class Login(View):
             has_valid_policy = login_attempt['user'].appuser.has_valid_policy
             request.session['has_valid_policy'] = has_valid_policy
             if has_valid_policy:
-                return redirect(reverse('home'))
+                return redirect(reverse(settings.AUTHENTICATED_LANDING_PAGE))
             else:
                 return redirect(reverse('policy_agreement'))
         else:
@@ -88,7 +88,7 @@ class CreateGuestAccount(View):
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             save_anonymous_user(request)
-        return redirect(reverse(settings.LOGIN_SUCCESS_REDIRECT))
+        return redirect(reverse(settings.AUTHENTICATED_LANDING_PAGE))
 
 
 class Logout(View):
@@ -116,7 +116,7 @@ class PolicyAgreement(View):
             log.policy = Policy.get_current()
             log.save()
             request.session['has_valid_policy'] = True
-            return redirect(reverse('home'))
+            return redirect(settings.AUTHENTICATED_LANDING_PAGE)
         context = {'form': self.form()}
         return HttpResponse(self.template.render(context, request))
 
@@ -135,6 +135,8 @@ class Register(View):
         else:
             self.form = forms.RegisterEmailForm
 
+        self.converting_from_anonymous = request.user.appuser.is_anonymous
+
         self.template = loader.get_template('appuser/register.html')
         self.context = {
             'form': None,
@@ -152,6 +154,7 @@ class Register(View):
 
 class RegisterAPI(APIView):
     def post(self, request, *args, **kwargs):
+        converting_from_anonymous = request.user.appuser.is_anonymous
         request_type = request.data['request']
         if settings.APPUSER_SETTINGS['use_display_name']:
             posted_username = request.data['display_name']
@@ -176,25 +179,41 @@ class RegisterAPI(APIView):
                 'errors': errors
             }
         elif request_type == 'register':
-
             if settings.APPUSER_SETTINGS['use_human_name']:
                 first_name = request.data['first_name']
                 last_name = request.data['last_name']
-                user = User(
-                    email=request.data['email'],
-                    username=posted_username,
-                    first_name=first_name,
-                    last_name=last_name,
-                )
+                if converting_from_anonymous:
+                    request.user.first_name = first_name
+                    request.user.last_name = last_name
+                    request.user.email = request.data['email']
+                    request.user.username = posted_username
+                else:
+                    user = User(
+                        email=request.data['email'],
+                        username=posted_username,
+                        first_name=first_name,
+                        last_name=last_name,
+                    )
             else:
-                user = User(
-                    email=request.data['email'],
-                    username=posted_username,
-                )
+                if converting_from_anonymous:
+                    request.user.email = request.data['email']
+                    request.user.username = posted_username
+                else:
+                    user = User(
+                        email=request.data['email'],
+                        username=posted_username,
+                    )
             try:
-                user.save()
-                user.set_password(request.data['password'])
-                user.save()
+
+                if converting_from_anonymous:
+                    request.user.save()
+                    request.user.set_password(request.data['password'])
+                    request.user.save()
+                    logout(request)
+                else:
+                    user.save()
+                    user.set_password(request.data['password'])
+                    user.save()
                 response = {
                     'status': 'ok'
                 }
@@ -266,7 +285,7 @@ class ProfileAPI(APIView):
                     status = 'error'
             else:
                 request.user.email = request.data['user']['email'].lower()
-                request.user.usernamr = posted_username
+                request.user.username = posted_username
                 if self.use_human_name:
                     request.user.first_name = request.data['user']['first_name']
                     request.user.last_name = request.data['user']['last_name']

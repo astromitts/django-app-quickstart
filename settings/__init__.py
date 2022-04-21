@@ -171,8 +171,8 @@ AUTHENTICATION_EXEMPT_VIEWS = [
 ]
 SITE_ADMIN_VIEWS = []
 AUTHENTICATION_REQUIRED_REDIRECT = 'login'
-LOGIN_SUCCESS_REDIRECT = 'dashboard'
-PW_RESET_SUCCESS_REDIRECT = 'dashboard'
+AUTHENTICATED_LANDING_PAGE = 'dashboard'
+PW_RESET_SUCCESS_REDIRECT = 'profile'
 DEFAULT_ERROR_VIEW = 'error'
 DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
 
@@ -182,6 +182,7 @@ APPUSER_SETTINGS = {
     'use_display_name': False,
     'use_human_name': False,
     'allow_anonymous_users': True,
+    'allow_convert_to_permanent_user': True,
     'anonymous_users': {
         'bypass_login': False
     }
