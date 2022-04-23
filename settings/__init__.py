@@ -178,16 +178,12 @@ DEFAULT_FORBIDDEN_TEMPLATE = 'forbidden.html'
 
 DISPLAY_USER_NAME = True
 
-APPUSER_SETTINGS = {
-    'use_display_name': False,
-    'use_human_name': False,
-    'allow_anonymous_users': True,
-    'allow_convert_to_permanent_user': True,
-    'anonymous_users': {
-        'bypass_login': False
-    }
-}
 
-APP_NAME_DISPLAY = 'Official App Display'
-APP_NAME_LEGAL = 'app.com'
-APP_LEGAL_CONTACT_EMAIL = 'info@app.com'
+USE_DISPLAY_NAME = True
+USE_HUMAN_NAME = False
+ALLOW_ANONYMOUS_USERS = True
+ALLOW_CONVERT_TO_PERMANENT_USER = False
+
+APP_NAME_DISPLAY = "ASDF"
+APP_NAME_LEGAL = "ASDFG"
+APP_LEGAL_CONTACT_EMAIL = "ASDFGH"

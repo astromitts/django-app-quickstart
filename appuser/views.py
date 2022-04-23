@@ -58,7 +58,7 @@ class Login(View):
         self.context = {
             'form': None,
             'error': None,
-            'allow_guest': settings.APPUSER_SETTINGS['allow_anonymous_users']
+            'allow_guest': settings.ALLOW_ANONYMOUS_USERS
         }
 
     def get(self, request, *args, **kwargs):
@@ -124,8 +124,8 @@ class PolicyAgreement(View):
 class Register(View):
     def setup(self, request, *args, **kwargs):
         super(Register, self).setup(request, *args, **kwargs)
-        use_display_name = settings.APPUSER_SETTINGS['use_display_name']
-        use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+        use_display_name = settings.USE_DISPLAY_NAME
+        use_human_name = settings.USE_HUMAN_NAME
         if use_display_name and use_human_name:
             self.form = forms.RegisterDisplayNameGivenNameForm
         elif use_display_name and not use_human_name:
@@ -156,7 +156,7 @@ class RegisterAPI(APIView):
     def post(self, request, *args, **kwargs):
         converting_from_anonymous = request.user.appuser.is_anonymous
         request_type = request.data['request']
-        if settings.APPUSER_SETTINGS['use_display_name']:
+        if settings.USE_DISPLAY_NAME:
             posted_username = request.data['display_name']
         else:
             posted_username = request.data['email'].lower()
@@ -171,7 +171,7 @@ class RegisterAPI(APIView):
                 errors.append('Email already in use')
                 status = 'error'
 
-            if username_existing and settings.APPUSER_SETTINGS['use_display_name']:
+            if username_existing and settings.USE_DISPLAY_NAME:
                 errors.append('Username already in use')
                 status = 'error'
             response = {
@@ -179,7 +179,7 @@ class RegisterAPI(APIView):
                 'errors': errors
             }
         elif request_type == 'register':
-            if settings.APPUSER_SETTINGS['use_human_name']:
+            if settings.USE_HUMAN_NAME:
                 first_name = request.data['first_name']
                 last_name = request.data['last_name']
                 if converting_from_anonymous:
@@ -234,8 +234,8 @@ class RegisterAPI(APIView):
 class ProfileAPI(APIView):
     def setup(self, request, *args, **kwargs):
         super(ProfileAPI, self).setup(request, *args, **kwargs)
-        self.use_display_name = settings.APPUSER_SETTINGS['use_display_name']
-        self.use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+        self.use_display_name = settings.USE_DISPLAY_NAME
+        self.use_human_name = settings.USE_HUMAN_NAME
 
     def get(self, request, *args, **kwargs):
         return Response(
@@ -247,8 +247,8 @@ class ProfileAPI(APIView):
                     'last_name': request.user.last_name
                 },
                 'settings': {
-                    'use_display_name': settings.APPUSER_SETTINGS['use_display_name'],
-                    'use_human_name': settings.APPUSER_SETTINGS['use_human_name'],
+                    'use_display_name': settings.USE_DISPLAY_NAME,
+                    'use_human_name': settings.USE_HUMAN_NAME,
                 }
             }
         )
@@ -280,7 +280,7 @@ class ProfileAPI(APIView):
                     errors.append('Email already in use')
                     status = 'error'
 
-                if username_existing and settings.APPUSER_SETTINGS['use_display_name']:
+                if username_existing and settings.USE_DISPLAY_NAME:
                     errors.append('Username already in use')
                     status = 'error'
             else:
@@ -351,8 +351,8 @@ class EULA(PolicyBase):
 
 class UserProfile(View):
     def setup(self, request, *args, **kwargs):
-        use_display_name = settings.APPUSER_SETTINGS['use_display_name']
-        use_human_name = settings.APPUSER_SETTINGS['use_human_name']
+        use_display_name = settings.USE_DISPLAY_NAME
+        use_human_name = settings.USE_HUMAN_NAME
         self.initial_values = {
             'email': request.user.email,
             'display_name': request.user.username,

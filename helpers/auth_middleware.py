@@ -13,7 +13,7 @@ def anonymous_user(get_response):
             'register'
         ]
         create_anonymous_user_path = resolved_url.url_name not in create_user_exempt_paths
-        can_have_anonymous_user = settings.APPUSER_SETTINGS['allow_anonymous_users'] and create_anonymous_user_path
+        can_have_anonymous_user = settings.ALLOW_ANONYMOUS_USERS and create_anonymous_user_path
         if can_have_anonymous_user and not request.user.is_authenticated:
             save_anonymous_user(request)
         response = get_response(request)
