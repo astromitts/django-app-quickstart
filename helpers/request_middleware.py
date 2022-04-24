@@ -45,7 +45,11 @@ def request_validation(get_response):
                         request,
                         'You must be authenticated to access this page. Please log in.'
                     )
-                    return redirect(reverse(settings.AUTHENTICATION_REQUIRED_REDIRECT))
+                    if resolved_url.url_name == settings.AUTHENTICATED_LANDING_PAGE:
+                        redirect_to = settings.UNAUTHENTICATED_LANDING_PAGE
+                    else:
+                        redirect_to = settings.AUTHENTICATION_REQUIRED_REDIRECT
+                    return redirect(reverse(redirect_to))
                 else:
                     request.session['login_redirect_from'] = None
             if resolved_url.url_name in settings.SITE_ADMIN_VIEWS:

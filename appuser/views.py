@@ -135,7 +135,10 @@ class Register(View):
         else:
             self.form = forms.RegisterEmailForm
 
-        self.converting_from_anonymous = request.user.appuser.is_anonymous
+        if request.user.is_authenticated:
+            self.converting_from_anonymous = request.user.appuser.is_anonymous
+        else:
+            self.converting_from_anonymous = False
 
         self.template = loader.get_template('appuser/register.html')
         self.context = {
@@ -154,7 +157,10 @@ class Register(View):
 
 class RegisterAPI(APIView):
     def post(self, request, *args, **kwargs):
-        converting_from_anonymous = request.user.appuser.is_anonymous
+        if request.user.is_authenticated:
+            converting_from_anonymous = request.user.appuser.is_anonymous
+        else:
+            converting_from_anonymous = False
         request_type = request.data['request']
         if settings.USE_DISPLAY_NAME:
             posted_username = request.data['display_name']
