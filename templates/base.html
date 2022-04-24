@@ -20,7 +20,7 @@
   		<link href="{% static 'app.css' %}" rel="stylesheet">
   		{% endcomment %}
   		<title>
-  			BRAND{% block page_title %}{% endblock %}
+  			{{templates.brand_display_name}}{% block page_title %}{% endblock %}
   		</title>
   		{% comment %}
   		<link rel="shortcut icon" type="/image/png" href="{% static 'site_images/favicon.ico' %}"/>
@@ -29,9 +29,9 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
-			  <a class="navbar-brand" href="/">
+			  <a class="navbar-brand" href="{{templates.banner_brand_nav}}">
 			  	{% comment %}<img src="{% static 'site_images/crown.png' %}" />{% endcomment %}
-			  	BRAND
+			  	{{templates.brand_display_name}}
 			  </a>
 				<div>
 			    <ul class="navbar-nav">			
@@ -53,6 +53,9 @@
 						{% endif %}
 						{% if templates.display_create_account %}		
 						<li class="nav-item">
+						  <a class="nav-link" href="{% url 'login' %}">Log In</a>
+						</li>				
+						<li class="nav-item">
 						  <a class="nav-link" href="{% url 'register' %}">Create Account</a>
 						</li>
 						{% endif %}
@@ -61,7 +64,7 @@
 						  <a class="nav-link" href="{% url 'login' %}">Log In</a>
 						</li>			
 						<li class="nav-item">
-						  <a class="nav-link" href="{% url 'register' %}">Register</a>
+						  <a class="nav-link" href="{% url 'register' %}">Create Account</a>
 						</li>
 					{% endif %}
 			    </ul>
@@ -102,13 +105,15 @@
 	<nav class="navbar navbar-light bg-light">
 		<div class="container">
 			<div class="col-lg-4 col-sm-12">
-					BRAND © 2021 Copyright 
+					{{templates.brand_display_name}} © {{templates.copyright_year}} Copyright 
 			</div>
 			<div class="col-lg-8 col-sm-12">
-				<a href="">About</a> |
+				{% if templates.about_page_path %}
+					<a href="">About</a> |
+				{% endif %}
 				<a href="{% url 'privacy_policy' %}">Privacy Policy</a> |
-				<a href="{% url 'eula' %}">End User License Agreement</a> |
-				<a href="">Contact</a>
+				<a href="{% url 'eula' %}">End User License Agreement</a> 
+				{% if templates.contact_page_path %} | <a href="">Contact</a>{% endif %}
 			</div>
 			<div class="col-lg-12 col-sm-12">
 				Do you need a disclaimer? Put it here.

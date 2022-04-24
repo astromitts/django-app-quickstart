@@ -20,6 +20,12 @@ def request_validation(get_response):
             return redirect('{}{}'.format(settings.REDIRECT_TO, request.path))
 
         user_is_authenticated = request.user.is_authenticated
+
+        if user_is_authenticated:
+            is_anonymous = request.user.appuser.is_anonymous
+        else:
+            is_anonymous = True
+
         try:
             resolved_url = resolve(request.path)
 
@@ -30,8 +36,8 @@ def request_validation(get_response):
                 if not policy_pass and not is_policy_update:
                     if not request.user.is_superuser:
                         return(redirect(reverse('policy_agreement')))
-            if is_login_page and user_is_authenticated:
-                return redirect(reverse(settings.LOGIN_SUCCESS_REDIRECT))
+            if is_login_page and user_is_authenticated and not is_anonymous:
+                return redirect(reverse(settings.AUTHENTICATED_LANDING_PAGE))
             if resolved_url.url_name not in settings.AUTHENTICATION_EXEMPT_VIEWS:
                 if not user_is_authenticated:
                     request.session['login_redirect_from'] = request.path

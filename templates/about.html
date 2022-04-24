@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col">
+		<div><h2>And remember, don't do anything that affects anything, unless it turns out you were supposed to.</h2></div>
+		<div>
+			{% if templates.is_anonymous %}
+			<div class="card" style="width: 33%; float: right; margin: 0 0 15px 15px;">
+				<div class="card-body">
+					<div style="margin-bottom: 15px;">
+						<a href="{% url 'login' %}"><button class="btn btn-primary form-control">Log In</button></a>
+					</div>
+					<div>
+					<a href="{% url 'register' %}"><button class="btn btn-primary form-control">Create Account</button></a>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<p>Too much work. Let's burn it and say we dumped it in the sewer. That's right, baby. I ain't your loverboy Flexo, the guy you love so much. You even love anyone pretending to be him! Oh yeah, good luck with that.</p>
+			<p>Yeah, and if you were the pope they'd be all, "Straighten your pope hat. " And "Put on your good vestments. " Kif, I have mated with a woman. Inform the men. I found what I need. And it's not friends, it's things.</p>
+			<h2>Man, I'm sore all over. I feel like I just went ten rounds with mighty Thor.</h2>
+			<p>You wouldn't. Ask anyway! Moving along… You can crush me but you can't crush my spirit! Does anybody else feel jealous and aroused and worried? Fry, we have a crate to deliver. Can I use the gun?</p>
+			<ul>
+				<li>Goodbye, cruel world.</li>
+				<li>Goodbye, cruel lamp.</li>
+				<li>Goodbye, cruel velvet drapes, lined with what would appear to be some sort of cruel muslin and the cute little pom-pom curtain pull cords.</li>
+				<li>Cruel though they may be...</li>
+			</ul>
+			<h3>Michelle, I don't regret this, but I both rue and lament it.
+			</h3>
+			
+			<p>Quite possible. As an interesting side note, as a head without a body, I envy the dead. Oh Leela! You're the only person I could turn to; you're the only person who ever loved me. Why yes! Thanks for noticing. Oh no! The professor will hit me! But if Zoidberg 'fixes' it… then perhaps gifts!</p>
+
+			<h4>You won't have time for sleeping, soldier, not with all the bed making you'll be doing.</h4>
+			
+			<ol>
+				<li>Who am I making this out to?</li>
+				<li>I just told you! You've killed me!</li>
+				<li>We'll need to have a look inside you with this camera.</li>
+			</ol>
+
+			<p>So, how 'bout them Knicks? I've been there. My folks were always on me to groom myself and wear underpants. What am I, the pope? Throw her in the brig.</p>
+
+			<p>Dr. Zoidberg, that doesn't make sense. But, okay! I feel like I was mauled by Jesus. And remember, don't do anything that affects anything, unless it turns out you were supposed to, in which case, for the love of God, don't not do it!</p>
+
+			<p>Well, let's just dump it in the sewer and say we delivered it. You are the last hope of the universe. Say it in Russian! The alien mothership is in orbit here. If we can hit that bullseye, the rest of the dominoes will fall like a house of cards. Checkmate.</p>
+		</div>
+	</div>
+</div>
+{% endblock %}
